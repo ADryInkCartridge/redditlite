@@ -37,7 +37,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         credentials: true,
     }));
     app.use(express_session_1.default({
-        name: 'qid',
+        name: "qid",
         store: new RedisStore({
             client: redisClient,
             disableTouch: true,
@@ -50,7 +50,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             secure: constants_1.__prod__,
         },
         saveUninitialized: false,
-        secret: '------------------->',
+        secret: "------------------->",
         resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
@@ -61,10 +61,14 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         context: ({ req, res }) => ({ em: orm.em, req, res }),
     });
     apolloServer.applyMiddleware({ app, cors: false });
-    app.get('/', (_, res) => {
+    app.get("/", (_, res) => {
         res.send("Hello");
     });
-    app.listen(4000, () => { console.log("server stared on 4000"); });
+    app.listen(4000, () => {
+        console.log("server stared on 4000");
+    });
 });
-main().catch(e => { console.error(e); });
+main().catch((e) => {
+    console.error(e);
+});
 //# sourceMappingURL=index.js.map

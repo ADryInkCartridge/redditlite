@@ -3,16 +3,16 @@ import { Form, Formik } from "formik";
 import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
 import { Box, Button } from "@chakra-ui/react";
-import { useRegisterMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
+import { useLoginMutation } from "../generated/graphql";
 import { NavBar } from "../components/NavBar";
 
-interface registerProps {}
+interface LoginProps {}
 
-export const Register: React.FC<registerProps> = ({}) => {
+export const Login: React.FC<LoginProps> = ({}) => {
   const router = useRouter();
-  const [, register] = useRegisterMutation();
+  const [, login] = useLoginMutation();
   return (
     <div>
       <NavBar />
@@ -20,12 +20,11 @@ export const Register: React.FC<registerProps> = ({}) => {
         <Formik
           initialValues={{ username: "", password: "" }}
           onSubmit={async (value, { setErrors }) => {
-            console.log(value);
-            const response = await register(value);
-            if (response.data?.register.errors) {
-              setErrors(toErrorMap(response.data.register.errors));
+            const response = await login({ options: value });
+            if (response.data?.login.errors) {
+              setErrors(toErrorMap(response.data.login.errors));
             }
-            if (response.data?.register.user) {
+            if (response.data?.login.user) {
               router.push("/");
             }
           }}
@@ -42,9 +41,9 @@ export const Register: React.FC<registerProps> = ({}) => {
                   variant="solid"
                   type="submit"
                   isLoading={isSubmitting}
-                  loadingText="Loading"
+                  loadingText="Logging you in"
                 >
-                  Register
+                  Login
                 </Button>
               </Box>
             </Form>
@@ -55,4 +54,4 @@ export const Register: React.FC<registerProps> = ({}) => {
   );
 };
 
-export default Register;
+export default Login;
